@@ -5,7 +5,7 @@ namespace maximka
 {
 	MofINT::MofINT(int size )
 	{
-		if (size < 0 && size > SZ + 1)
+		if (size < 0)
 			throw std::out_of_range("Error");
 		SIZE = size;
 		pile = new int[SIZE];
@@ -27,7 +27,7 @@ namespace maximka
 
 	MofINT::MofINT(int size, int *mass)
 	{
-		if (size < 0 && size > SZ + 1)
+		if (size < 0 )
 			throw std::out_of_range("Error");
 		SIZE = size;
 		pile = new int[SIZE];
@@ -35,6 +35,14 @@ namespace maximka
 		{
 			pile[i] = mass[i];
 		}
+	}
+
+
+	MofINT::MofINT(MofINT&& other) 
+	{
+		SIZE = other.SIZE;
+		pile = other.pile;
+		other.pile = nullptr;
 	}
 	
 
@@ -63,7 +71,7 @@ namespace maximka
 				s.ignore(10000, '\n');
 				continue;
 			}
-		} while (!(mofi.SIZE > 0 && mofi.SIZE < mofi.SZ + 1));
+		} while (!(mofi.SIZE > 0));
 		mofi.pile = new int[mofi.SIZE];
 		for (int i = 0; i < mofi.SIZE; ++i)
 		{
@@ -99,9 +107,9 @@ namespace maximka
 	{
 		return SIZE;
 	}
-	int MofINT::getMaxSize() const
+	int MofINT::getPILE(int number)const
 	{
-		return SZ;
+		return pile[number];
 	}
 	MofINT MofINT::operator= (const MofINT& other )
 	{
@@ -124,10 +132,6 @@ namespace maximka
 		}
 		for (int i = 0; i < second.SIZE; ++i)
 		{
-			if (truesize == second.SZ)
-			{
-				throw std::exception("Pile is Full");
-			}
 			if (find(tmpmass, second.pile[i], truesize))
 			{
 				insert(second.pile[i], tmpmass, truesize);
@@ -145,10 +149,6 @@ namespace maximka
 	}
 	MofINT operator+=(MofINT& left, int element)
 	{
-		if (left.SIZE == left.SZ)
-		{
-			throw std::exception();
-		}
 		if (find(left.pile, element, left.SIZE))
 		{
 			int* tmpmass = new int[left.SIZE + 1];
@@ -164,8 +164,8 @@ namespace maximka
 	MofINT operator*(const MofINT& first, MofINT& second)
 	{
 		MofINT tmp;
-		int maxsize = (first.SIZE > second.SIZE) ? first.SIZE : second.SIZE;
-		int* tmpmass = new int[maxsize];
+		int minsize = (first.SIZE < second.SIZE) ? first.SIZE : second.SIZE;
+		int* tmpmass = new int[minsize];
 		int truesize = 0;
 		for (int i = 0; i < first.SIZE; ++i)
 		{
@@ -187,7 +187,7 @@ namespace maximka
 	MofINT operator-(const MofINT& first, MofINT& second)
 	{
 		MofINT tmp;
-		int maxsize = (first.SIZE > second.SIZE) ? first.SIZE : second.SIZE;
+		int maxsize = first.SIZE;
 		int* tmpmass = new int[maxsize];
 		int truesize = 0;
 		for (int i = 0; i < first.SIZE; ++i)

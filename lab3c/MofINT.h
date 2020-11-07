@@ -6,13 +6,13 @@ namespace maximka {
 
 	class MofINT {
 	private:
-		static const int SZ = 10;
 		int SIZE;
 		int *pile;
 	public:
 		MofINT(int size = 0);
 		MofINT(const MofINT&);
 		MofINT(int size, int* arr);
+		MofINT(MofINT&&);
 		~MofINT();
 		MofINT operator=(const MofINT&);
 		friend MofINT operator+(const MofINT&, const MofINT&);
@@ -21,7 +21,7 @@ namespace maximka {
 		friend MofINT operator+=(MofINT&, int element);
 		int in(int element);
 		int getSIZE()const;
-		int getMaxSize()const;
+		int getPILE(int )const;
 		friend std::ostream& operator<<(std::ostream&, const MofINT&);
 		friend std::istream& operator>>(std::istream&, MofINT&);
 	};
