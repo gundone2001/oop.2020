@@ -71,7 +71,12 @@ namespace maximka
 				s.ignore(10000, '\n');
 				continue;
 			}
-		} while (!(mofi.SIZE > 0));
+		} while (!(mofi.SIZE >= 0));
+		if (mofi.SIZE == 0)
+		{
+			mofi.pile = nullptr;
+		return s;
+		}
 		mofi.pile = new int[mofi.SIZE];
 		for (int i = 0; i < mofi.SIZE; ++i)
 		{
@@ -151,7 +156,16 @@ namespace maximka
 	{
 		if (find(left.pile, element, left.SIZE))
 		{
-			int* tmpmass = new int[left.SIZE + 1];
+			int* tmpmass = new int[left.SIZE];
+			for (int i = 0; i < left.SIZE; ++i)
+			{
+				tmpmass[i] = left.pile[i];
+			}
+			left.pile = new int[left.SIZE + 1];
+			for (int i = 0; i < left.SIZE; ++i)
+			{
+				left.pile[i] = tmpmass[i];
+			}
 			insert(element, left.pile, left.SIZE);
 			left.SIZE++;
 		}
